@@ -1,0 +1,27 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "settings": {
+    "documentationRules": {
+      "xmlHeader": false,
+      "copyrightText": "Copyright (c) Dominique Theodora Frost. All rights reserved.",
+      "documentationCulture": "en-Us",
+      "documentExposedElements": true,
+      "documentInterfaces": true,
+      "documentInternalElements": true,
+      "documentPrivateElements": true,
+      "documentPrivateFields": false,
+      "fileNamingConvention": "stylecop"
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "outsideNamespace",
+      "systemUsingDirectivesFirst": true,
+      "elementOrder": [ "kind", "accessibility", "constant", "static", "readonly" ]
+    },
+    "indentation": {
+      "useTabs": false,
+      "indentationSize": 4
+    },
+    "readabilityRules": { "allowBuiltInTypeAliases": true }
+
+  }
+}

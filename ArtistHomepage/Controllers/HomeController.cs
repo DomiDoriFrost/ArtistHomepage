@@ -1,9 +1,13 @@
-﻿using ArtistHomepage.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+﻿// <copyright file="HomeController.cs"
+// Copyright (c) Dominique Theodora Frost. All rights reserved.
+// </copyright>
 
 namespace ArtistHomepage.Controllers
 {
+    using System.Diagnostics;
+    using ArtistHomepage.Models;
+    using Microsoft.AspNetCore.Mvc;
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
