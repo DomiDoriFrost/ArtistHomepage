@@ -1,4 +1,6 @@
-﻿using ArtistHomepage.Models;
+﻿// Copyright (c) Dominique Theodora Frost. All rights reserved.
+
+using ArtistHomepage.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
