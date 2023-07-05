@@ -4,6 +4,7 @@ using ArtistHomepage.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtistHomepage.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230705144447_ArtworkDraftContent")]
+    partial class ArtworkDraftContent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,6 +64,21 @@ namespace ArtistHomepage.Data.Migrations
                     b.ToTable("Artworks");
                 });
 
+            modelBuilder.Entity("ArtistHomepage.Models.ArtworkDraft", b =>
+                {
+                    b.Property<string>("ArtworkDraftId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ArtworkDraftContentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArtworkDraftId");
+
+                    b.HasIndex("ArtworkDraftContentId");
+
+                    b.ToTable("ArtworkDrafts");
+                });
+
             modelBuilder.Entity("ArtistHomepage.Models.ArtworkDraftContent", b =>
                 {
                     b.Property<int>("Id")
@@ -69,24 +87,8 @@ namespace ArtistHomepage.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ArtistId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ArtworkDraftId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("Day")
                         .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("ForSale")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Medium")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Month")
                         .HasColumnType("int");
@@ -94,20 +96,12 @@ namespace ArtistHomepage.Data.Migrations
                     b.Property<string>("NewImageTags")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tags")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArtistId");
-
-                    b.ToTable("ArtworkDraftContents");
+                    b.ToTable("ArtworkDraftContent");
                 });
 
             modelBuilder.Entity("ArtistHomepage.Models.ArtworkGroup", b =>
@@ -492,15 +486,15 @@ namespace ArtistHomepage.Data.Migrations
                     b.Navigation("Artist");
                 });
 
-            modelBuilder.Entity("ArtistHomepage.Models.ArtworkDraftContent", b =>
+            modelBuilder.Entity("ArtistHomepage.Models.ArtworkDraft", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Artist")
+                    b.HasOne("ArtistHomepage.Models.ArtworkDraftContent", "ArtworkDraftContent")
                         .WithMany()
-                        .HasForeignKey("ArtistId")
+                        .HasForeignKey("ArtworkDraftContentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Artist");
+                    b.Navigation("ArtworkDraftContent");
                 });
 
             modelBuilder.Entity("ArtistHomepage.Models.ArtworkGroup", b =>

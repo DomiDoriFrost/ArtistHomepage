@@ -10,11 +10,6 @@ namespace ArtistHomepage.Models
     public partial class Artwork : UserProperty
     {
         /// <summary>
-        /// Gets or sets the DateDisplayMode.
-        /// </summary>
-        public DateDisplayMode DateDisplayMode { get; set; } = DateDisplayMode.Year;
-
-        /// <summary>
         /// Gets or sets the Id of the Artwork.
         /// </summary>
         public int Id { get; set; } = 0;
@@ -25,7 +20,7 @@ namespace ArtistHomepage.Models
         public int ArtworkIndex { get; set; } = -1;
 
         /// <summary>
-        /// Gets or sets the Title of the Artwork.
+        /// Gets or sets the Title of the Artwork.p
         /// </summary>
         [Required]
         public string Title { get; set; } = string.Empty;
@@ -60,6 +55,8 @@ namespace ArtistHomepage.Models
         /// this artwork is for sale.
         /// </summary>
         public bool ForSale { get; set; }
+
+
 
         /// <summary>
         /// Gets or sets the tags assigned to this Artwork.

@@ -1,15 +1,22 @@
 // Copyright (c) Dominique Theodora Frost. All rights reserved.
 
 using ArtistHomepage.Data;
+using ArtistHomepage.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddScoped<IArtworkDraft, ArtworkDraft>(sp => ArtworkDraft.GetArtworkDraft(sp));
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -36,6 +43,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 
 app.UseRouting();
 

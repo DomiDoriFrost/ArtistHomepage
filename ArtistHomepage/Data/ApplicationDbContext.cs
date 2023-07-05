@@ -44,5 +44,10 @@ namespace ArtistHomepage.Data
         /// Gets or sets the ArtworkGroups in the Context.
         /// </summary>
         public DbSet<ArtworkGroup> ArtworkGroups { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Artwork Draft Content.
+        /// </summary>
+        public DbSet<ArtworkDraftContent> ArtworkDraftContents { get; set; }
     }
 }

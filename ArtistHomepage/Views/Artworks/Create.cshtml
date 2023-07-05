@@ -1,0 +1,185 @@
+﻿@using ArtistHomepage.Data;
+@model ArtworkDraftContent
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Artwork</h4>
+<hr />
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-8">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group row">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Medium" class="control-label"></label>
+                <input asp-for="Medium" class="form-control" />
+                <span asp-validation-for="Medium" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Year" class="control-label col-2"></label>
+                <input type="number" asp-for="Year" min="1970" max="@DateTime.Now.Year" class="form-control col-2" />
+                <label asp-for="Month" class="control-label col-2"></label>
+                <input type="number" asp-for="Month" min="1" max="12" class="form-control col-2" />
+                <label asp-for="Day" class="control-label col-2"></label>
+                <input type="number" asp-for="Day" min="1" max="31" class="form-control col-2" />
+            </div>
+            <div class="row">
+                <span asp-validation-for="Year" class="text-danger"></span>
+                <span asp-validation-for="Month" class="text-danger"></span>
+                <span asp-validation-for="Day" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="ForSale" /> @Html.DisplayNameFor(model => model.ForSale)
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex flex-wrap p-5">
+                @foreach (var image in Model.Images)
+                {
+                    <div class="card m-2 flex-fill" width="100%" height="600px">
+                        <div class="card-header">@image.Name</div>
+                        <div class="card-body p-0">
+                            <img src="~/@image.Name" style="max-height:440px; width:auto;" alt="@image.AltText">
+                        </div>
+                        <div class="card-footer">
+                            @image.AltText
+                            <br />
+                            @image.Tags
+                        </div>
+
+                    </div>
+                }
+
+                <!-- Button trigger modal -->
+                <div class="card m-2" height="600px" width="200px">
+                    <div class="card-header">Options</div>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary text-center mx-auto m-2" width="100%" data-bs-toggle="modal" data-bs-target="#uploadImg">
+                            Upload new image
+                        </button>
+                        <button type="button" class="btn btn-primary text-center mx-auto m-2" width="100%" data-bs-toggle="modal" data-bs-target="#addImg">
+                            Add existing image
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal - Upload -->
+                <div class="modal fade" id="uploadImg" tabindex="-1" aria-labelledby="uploadImgLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="uploadImgLabel">Upload Image</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                @{
+                                    await Html.RenderPartialAsync("_ImageUpload", Model);
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button asp-action="AddNewImage">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal - Add Existing -->
+                <div class="modal fade" id="addImg" tabindex="-1" aria-labelledby="uploadImgLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="uploadImgLabel">Upload Image</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                @{
+                                    var index = 0;
+                                    foreach (Image existingImage in ViewBag.ExistingImages)
+                                    {
+                                        <div class="row py-2">
+                                            <button type="button" onclick="selectExistingImage(@existingImage.Id, @index, @ViewBag.ExistingImages.Count)" class="btn btn-primary text-black rounded p-0 position-relative">
+                                                <div id="existingImage_@index" class="card p-0">
+                                                    <div class="card-body">
+                                                        <img src="~/@existingImage.Name" class="rounded img-fluid" alt="@existingImage.AltText">
+                                                        <span id="selectedBannerCheckmark_@index" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" hidden>
+                                                            <i class="fa-solid fa-check"></i>
+                                                            <span class="visually-hidden" id="selectedBannerLabel_@index"></span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <h6>@existingImage.Name</h6>
+                                                        <dl class="row">
+                                                            <dt class="col-6">Artworks this image is used in</dt>
+                                                            <dd class="col-6">0</dd>
+                                                        </dl>
+                                                    </div>
+                                                </div>
+                                            </button>
+
+                                        </div>
+                                        index++;
+                                    }
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button id="ConfirmAddExisting" asp-action="AddExistingImage">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts
+    {
+    <script>
+        function selectExistingImage(id, selectedIndex, count) {
+            let confirm = document.getElementById("ConfirmAddExisting");
+            confirm.setAttribute("formaction", "/Artworks/AddExistingImage/" + id);
+
+            for (let ix = 0; ix < count; ix++) {
+                console.log(`current index:${ix}\nselected index ${selectedIndex}`)
+                var checkMark = document.getElementById('selectedBannerCheckmark_' + ix);
+                console.log(checkMark)
+                if (ix == selectedIndex && checkMark.attributes.getNamedItem("hidden") != null) {
+                    console.log(`unhide element ${ix} with id ${ix}`)
+                    checkMark.attributes.removeNamedItem("hidden");
+                }
+                else if (ix != selectedIndex && checkMark.attributes.getNamedItem("hidden") == null) {
+                    console.log(`hide element ${ix} with id ${ix}`)
+                    checkMark.attributes.setNamedItem(document.createAttribute("hidden"));
+                }
+            }
+        }
+    </script>
+}
